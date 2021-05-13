@@ -4,10 +4,15 @@ const layouts = require('express-ejs-layouts');
 const app = express();
 const flash = require('connect-flash');
 const session = require('express-session');
+const passport = require('./config/ppConfig');
+
 
 const SECRET_SESSION = process.env.SECRET_SESSION;
 
 //middleware 
+app.use(passport.initialize());      // Initialize passport
+app.use(passport.session());         // Add a session
+
 app.set('view engine', 'ejs');
 
 app.use(require('morgan')('dev'));
