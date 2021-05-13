@@ -63,7 +63,7 @@ user.addHook('beforeCreate', (pendingUser) => { // pendingUser is user object th
 user.prototype.toJSON = function(){
   let userData = this.get();
   delete userData.password;
-  
+  sequelize
   return userData;
 }
 
