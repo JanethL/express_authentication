@@ -54,5 +54,14 @@ router.post('/signup', async (req, res) => {
   }
 });
 
+
+//logout
+
+router.get('/logout', (req, res) => {
+  req.logout();
+  req.flash('success', 'See you next time...')
+  res.redirect('/')
+})
+
 module.exports = router;
 
