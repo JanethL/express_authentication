@@ -10,9 +10,6 @@ const isLoggedIn = require('./middleware/isLoggedIn');
 
 const SECRET_SESSION = process.env.SECRET_SESSION;
 
-//middleware 
-app.use(passport.initialize());      // Initialize passport
-app.use(passport.session());         // Add a session
 
 app.set('view engine', 'ejs');
 
@@ -28,6 +25,11 @@ app.use(session({
 }));
 
 app.use(flash());
+
+//middleware 
+app.use(passport.initialize());      // Initialize passport
+app.use(passport.session());         // Add a session
+
 app.use((req, res, next) => {
   console.log(res.locals);
   res.locals.alerts = req.flash();
@@ -35,16 +37,18 @@ app.use((req, res, next) => {
   next();
 });
 
+
 app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.get('/profile', (req, res) => {
-  res.render('profile');
-});
 
 app.use('/auth', require('./controllers/auth'));
 
+app.get('/profile', isLoggedIn, (req, res) => {
+  const { id, name, email } = req.user.get(); 
+  res.render('profile', { id, name, email });
+});
 
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {
